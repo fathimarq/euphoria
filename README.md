@@ -14,10 +14,10 @@ Euphoria is a pixel-art habit tracker where every good thing you do grows a plan
 
 ## Built With
 
-HTML5
-CSS3
-Vanilla JavaScript
-LocalStorage
+1. HTML5
+2. CSS3
+3. Vanilla JavaScript
+4. LocalStorage
 
 ## Try It Live
 
