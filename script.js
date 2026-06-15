@@ -559,20 +559,35 @@ function setupResetButton() {
     }
 }
 
+// FIXED DELETE ACCOUNT FUNCTION
 function performHardReset() {
     const currentUser = localStorage.getItem('euphoria_current_user');
-    if (!currentUser) return;
+    if (!currentUser) {
+        window.location.href = 'index.html';
+        return;
+    }
     
-    userData = {
-        wins: [],
-        streak: 0,
-        lastLogDate: null,
-        meadowPosts: JSON.parse(JSON.stringify(SAMPLE_MEADOW_POSTS)),
-        username: currentUser,
-        avatar: "🌱"
-    };
-    saveData();
+    // Clear all user data from localStorage
+    const allUsersData = JSON.parse(localStorage.getItem('euphoria_all_users_data') || '{}');
+    const allFriendsData = JSON.parse(localStorage.getItem('euphoria_all_friends_data') || '{}');
+    const allChatsData = JSON.parse(localStorage.getItem('euphoria_all_chats_data') || '{}');
     
+    // Delete this user's data
+    delete allUsersData[currentUser];
+    delete allFriendsData[currentUser];
+    delete allChatsData[currentUser];
+    
+    // Save back to localStorage
+    localStorage.setItem('euphoria_all_users_data', JSON.stringify(allUsersData));
+    localStorage.setItem('euphoria_all_friends_data', JSON.stringify(allFriendsData));
+    localStorage.setItem('euphoria_all_chats_data', JSON.stringify(allChatsData));
+    
+    // Also remove from users list (euphoria_users)
+    const users = JSON.parse(localStorage.getItem('euphoria_users') || '{}');
+    delete users[currentUser];
+    localStorage.setItem('euphoria_users', JSON.stringify(users));
+    
+    // Clear session storage likes
     const keysToRemove = [];
     for (let i = 0; i < sessionStorage.length; i++) {
         const key = sessionStorage.key(i);
@@ -580,8 +595,14 @@ function performHardReset() {
     }
     keysToRemove.forEach(key => sessionStorage.removeItem(key));
     
-    refreshAllDisplays();
-    showFeedback("💀 All data wiped. Start fresh, gardener. 💀", false);
+    // Logout and redirect to landing page
+    localStorage.removeItem('euphoria_current_user');
+    
+    showFeedback("💀 Account deleted. Redirecting... 💀", false);
+    
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 1500);
 }
 
 function formatDate() {
@@ -904,6 +925,7 @@ function showCardFlip(plantId, plantName, plantEmoji, quote, goodThing) {
     };
     document.addEventListener("keydown", escHandler);
 }
+
 function refreshHistory() {
     const historyList = document.getElementById("historyList");
     if (!historyList) return;
