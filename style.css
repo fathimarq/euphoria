@@ -1,0 +1,1430 @@
+/* ============================================ */
+/* EUPHORIA - FULL PIXEL ANIMATED VIBE          */
+/* ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+
+body {
+    background: #F8F0DC;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: #2D3E1A;
+    padding: 20px;
+    cursor: default;
+}
+
+.pixel-crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 4px);
+    z-index: 999;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pixel-header {
+    text-align: center;
+    margin-bottom: 24px;
+    border: 4px solid #4A5A3A;
+    background: #6B8C42;
+    padding: 16px;
+    box-shadow: 6px 6px 0px #2D3E1A;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.logo h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 28px;
+    color: #F4C542;
+    text-shadow: 3px 3px 0px #2D3E1A;
+    letter-spacing: 2px;
+}
+
+.pixel-icon {
+    font-size: 32px;
+    filter: drop-shadow(2px 2px 0px #2D3E1A);
+}
+
+.tagline {
+    font-size: 18px;
+    color: #F8F0DC;
+    margin-top: 8px;
+    letter-spacing: 1px;
+}
+
+.data-notice {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #F4C542;
+    margin-top: 8px;
+    letter-spacing: 1px;
+}
+
+.nav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+    justify-content: center;
+}
+
+.pixel-tab {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    background: #F4C542;
+    border: 3px solid #4A5A3A;
+    color: #2D3E1A;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all 0.05s linear;
+    box-shadow: 3px 3px 0px #4A5A3A;
+}
+
+.pixel-tab:hover {
+    background: #F8D86A;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #2D3E1A;
+}
+
+.pixel-tab.active {
+    background: #6B8C42;
+    color: #F8F0DC;
+    box-shadow: inset 2px 2px 0px #2D3E1A;
+    transform: translate(2px, 2px);
+}
+
+.tab-content {
+    display: none;
+    animation: pixelFade 0.2s steps(4);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes pixelFade {
+    0% { opacity: 0; transform: translateY(4px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.pixel-card {
+    background: #FFFFF0;
+    border: 4px solid #4A5A3A;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 6px 6px 0px #A5673F;
+}
+
+.pixel-card-header {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    background: #6B8C42;
+    color: #F8F0DC;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 16px;
+    border: 2px solid #2D3E1A;
+    box-shadow: 3px 3px 0px #2D3E1A;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 16px;
+}
+
+.stat-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: #A5673F;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 24px;
+    color: #6B8C42;
+    text-shadow: 2px 2px 0px #D4C9A8;
+}
+
+.xp-card {
+    padding: 16px;
+}
+
+.xp-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.xp-bar-bg {
+    background: #D4C9A8;
+    border: 3px solid #4A5A3A;
+    height: 24px;
+}
+
+.xp-bar-fill {
+    background: #F4C542;
+    height: 100%;
+    width: 0%;
+    transition: width 0.2s steps(10);
+}
+
+.xp-text {
+    font-size: 16px;
+    margin-top: 8px;
+    text-align: right;
+}
+
+.pixel-input {
+    width: 100%;
+    background: #FFFFF0;
+    border: 3px solid #4A5A3A;
+    padding: 12px;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    color: #2D3E1A;
+    resize: vertical;
+    box-shadow: inset 2px 2px 0px #D4C9A8;
+}
+
+.pixel-input:focus {
+    outline: none;
+    border-color: #F4C542;
+}
+
+.pixel-button {
+    font-family: 'Press Start 2P', monospace;
+    background: #6B8C42;
+    border: 3px solid #2D3E1A;
+    color: #F8F0DC;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.05s linear;
+    box-shadow: 3px 3px 0px #2D3E1A;
+    display: inline-block;
+    text-align: center;
+}
+
+.pixel-button:hover {
+    background: #8CA87B;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #2D3E1A;
+}
+
+.pixel-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #2D3E1A;
+}
+
+.pixel-button-small {
+    font-family: 'Press Start 2P', monospace;
+    background: #6B8C42;
+    border: 3px solid #2D3E1A;
+    color: #F8F0DC;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 10px;
+    transition: all 0.05s linear;
+    box-shadow: 3px 3px 0px #2D3E1A;
+    display: inline-block;
+    text-align: center;
+}
+
+.pixel-button-small:hover {
+    background: #8CA87B;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #2D3E1A;
+}
+
+.pixel-button-small:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #2D3E1A;
+}
+
+.pixel-button-large {
+    width: 100%;
+    margin-top: 12px;
+}
+
+.pixel-button-danger-full {
+    font-family: 'Press Start 2P', monospace;
+    background: #E07A5F;
+    border: 3px solid #8B3A2A;
+    color: #FFFFF0;
+    padding: 14px 20px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.05s linear;
+    box-shadow: 4px 4px 0px #5C2E1A;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.pixel-button-danger-full:hover {
+    background: #C04E3A;
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0px #5C2E1A;
+}
+
+.pixel-button-danger-full:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #5C2E1A;
+}
+
+.pixel-button-danger-small {
+    font-family: 'Press Start 2P', monospace;
+    background: #E07A5F;
+    border: 3px solid #8B3A2A;
+    color: #FFFFF0;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 9px;
+    transition: all 0.05s linear;
+    box-shadow: 3px 3px 0px #5C2E1A;
+}
+
+.photo-upload-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.photo-name {
+    font-size: 14px;
+    color: #A5673F;
+}
+
+.feedback-message {
+    margin-top: 12px;
+    font-size: 16px;
+    color: #F4C542;
+    text-shadow: 1px 1px 0px #2D3E1A;
+    animation: pixelBlink 0.3s steps(2);
+}
+
+@keyframes pixelBlink {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.mini-garden {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 60px;
+    align-items: center;
+}
+
+.empty-garden {
+    color: #A5673F;
+    font-size: 14px;
+}
+
+.garden-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.garden-plant {
+    text-align: center;
+    padding: 12px;
+    background: #F8F0DC;
+    border: 2px solid #4A5A3A;
+    font-size: 40px;
+    cursor: pointer;
+    transition: all 0.05s linear;
+    animation: gentleBob 2s infinite ease-in-out;
+}
+
+.garden-plant:hover {
+    transform: scale(1.05);
+    background: #F4C542;
+}
+
+@keyframes gentleBob {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+    100% { transform: translateY(0px); }
+}
+
+.garden-plant.rare {
+    animation: gentleBob 2s infinite, softGlow 2s infinite;
+}
+
+@keyframes softGlow {
+    0% { filter: drop-shadow(0 0 2px #F4C542); }
+    50% { filter: drop-shadow(0 0 10px #F4C542); }
+    100% { filter: drop-shadow(0 0 2px #F4C542); }
+}
+
+.album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.album-card {
+    background: #FFFFF0;
+    border: 3px solid #4A5A3A;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.05s linear;
+    box-shadow: 3px 3px 0px #A5673F;
+}
+
+.album-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #A5673F;
+}
+
+.album-card.locked {
+    opacity: 0.5;
+    filter: grayscale(0.5);
+}
+
+.album-card-plant {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.album-card-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #2D3E1A;
+}
+
+.album-card-rarity {
+    font-size: 10px;
+    color: #F4C542;
+    margin-top: 4px;
+}
+
+.album-stats {
+    font-size: 14px;
+    margin-bottom: 16px;
+    text-align: center;
+    color: #6B8C42;
+}
+
+/* ============================================ */
+/* POPUP MODAL - LARGER FONTS                  */
+/* ============================================ */
+
+.plant-popup-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+}
+
+.plant-popup-overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.plant-popup-container {
+    background: #FFFFF0;
+    border: 4px solid #6B8C42;
+    padding: 24px 20px 20px 20px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    cursor: default;
+    box-shadow: 8px 8px 0px #2D3E1A;
+}
+
+.plant-popup-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: #E07A5F;
+    border: 2px solid #8B3A2A;
+    color: white;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 10px;
+}
+
+.plant-popup-close:hover {
+    background: #C04E3A;
+}
+
+.plant-popup-emoji {
+    font-size: 72px;
+    margin-bottom: 12px;
+}
+
+.plant-popup-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
+    color: #6B8C42;
+    margin-bottom: 8px;
+}
+
+.plant-popup-date {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #A5673F;
+    margin-bottom: 16px;
+}
+
+.plant-popup-good {
+    font-size: 18px;
+    color: #2D3E1A;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #F8F0DC;
+    border-left: 4px solid #F4C542;
+    text-align: left;
+    max-height: 150px;
+    overflow-y: auto;
+    line-height: 1.5;
+}
+
+.plant-popup-photo {
+    max-width: 250px;
+    max-height: 250px;
+    width: auto;
+    height: auto;
+    border: 3px solid #4A5A3A;
+    margin-bottom: 16px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.plant-popup-no-photo {
+    font-size: 14px;
+    color: #A5673F;
+    margin-bottom: 16px;
+    padding: 16px;
+    background: #F8F0DC;
+    border: 2px dashed #4A5A3A;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.plant-popup-quote {
+    font-size: 14px;
+    font-style: italic;
+    color: #6B8C42;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #FFFFF0;
+    border: 2px solid #F4C542;
+    line-height: 1.5;
+}
+
+.plant-popup-close-btn {
+    font-family: 'Press Start 2P', monospace;
+    background: #6B8C42;
+    border: 2px solid #2D3E1A;
+    color: #F8F0DC;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.plant-popup-close-btn:hover {
+    background: #8CA87B;
+}
+
+/* ============================================ */
+/* HISTORY ROOTS - LARGER IMAGES & FONTS       */
+/* ============================================ */
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.history-item {
+    background: #F8F0DC;
+    border-left: 8px solid #6B8C42;
+    padding: 16px;
+}
+
+.history-date {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: #A5673F;
+    margin-bottom: 6px;
+}
+
+.history-good {
+    font-size: 18px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    color: #2D3E1A;
+    line-height: 1.4;
+}
+
+.history-photo-small {
+    max-width: 120px;
+    max-height: 120px;
+    width: auto;
+    height: auto;
+    margin-top: 10px;
+    border: 3px solid #4A5A3A;
+    display: block;
+}
+
+/* ============================================ */
+/* MEADOW IMAGES - LARGER                      */
+/* ============================================ */
+
+.meadow-post-image-small {
+    max-width: 150px;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    margin-top: 10px;
+    border: 3px solid #4A5A3A;
+    display: block;
+}
+
+/* ============================================ */
+/* MEADOW & HISTORY REST                       */
+/* ============================================ */
+
+.meadow-submit {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 3px dashed #4A5A3A;
+}
+
+.meadow-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.pixel-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.meadow-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.meadow-post {
+    background: #F8F0DC;
+    border: 3px solid #4A5A3A;
+    padding: 16px;
+}
+
+.meadow-post-header {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #6B8C42;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.meadow-post-text {
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.meadow-post-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px dashed #D4C9A8;
+}
+
+.like-button {
+    background: none;
+    border: none;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 4px 8px;
+    color: #A5673F;
+}
+
+.like-button.liked {
+    color: #E07A5F;
+}
+
+.like-count {
+    font-size: 11px;
+    color: #6B8C42;
+}
+
+.meadow-post-avatar {
+    font-size: 18px;
+    margin-right: 6px;
+}
+
+.pixel-footer {
+    text-align: center;
+    margin-top: 32px;
+    padding: 16px;
+    border-top: 3px solid #4A5A3A;
+    font-size: 12px;
+    color: #A5673F;
+}
+
+/* ============================================ */
+/* SETTINGS PAGE STYLES                         */
+/* ============================================ */
+
+.profile-card {
+    text-align: center;
+}
+
+.profile-preview {
+    background: #6B8C42;
+    border: 3px solid #2D3E1A;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: inset 2px 2px 0px #8CA87B, inset -2px -2px 0px #4A5A3A;
+}
+
+.profile-preview-avatar {
+    font-size: 64px;
+    filter: drop-shadow(3px 3px 0px #2D3E1A);
+    animation: gentleBob 2s infinite;
+}
+
+.profile-preview-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: #F4C542;
+    margin-top: 12px;
+    text-shadow: 2px 2px 0px #2D3E1A;
+}
+
+.settings-row {
+    margin-top: 16px;
+}
+
+.settings-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    display: block;
+    margin-bottom: 12px;
+    color: #6B8C42;
+    text-align: left;
+}
+
+.pixel-input-small {
+    font-size: 16px;
+    padding: 10px;
+    text-align: center;
+}
+
+.settings-hint {
+    font-size: 11px;
+    color: #A5673F;
+    margin-top: 8px;
+    text-align: left;
+}
+
+.center-hint {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.avatar-scroll-container {
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin: 8px 0;
+}
+
+.avatar-row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    min-width: min-content;
+}
+
+.avatar-item {
+    font-size: 32px;
+    background: #FFFFF0;
+    border: 3px solid #4A5A3A;
+    padding: 10px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.05s linear;
+    box-shadow: 2px 2px 0px #A5673F;
+    flex-shrink: 0;
+}
+
+.avatar-item:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px #A5673F;
+    background: #F4C542;
+}
+
+.avatar-item.selected {
+    background: #6B8C42;
+    border-color: #F4C542;
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #A5673F;
+}
+
+.avatar-update-message {
+    text-align: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #6B8C42;
+    margin-top: 12px;
+    padding: 8px;
+    background: #FFFFF0;
+    border: 2px solid #6B8C42;
+    animation: pixelBlink 0.3s steps(2);
+}
+
+.danger-card {
+    border-color: #E07A5F;
+    background: #FFF8F0;
+}
+
+.danger-header {
+    background: #E07A5F;
+    border-color: #8B3A2A;
+    color: #FFFFF0;
+}
+
+.danger-warning-small {
+    font-size: 9px;
+    color: #E07A5F;
+    text-align: center;
+    font-family: 'Press Start 2P', monospace;
+    margin-top: 8px;
+}
+
+.delete-confirm-box {
+    margin-top: 20px;
+    padding: 16px;
+    background: #2D1A0A;
+    border: 4px solid #E07A5F;
+    display: none;
+}
+
+.delete-confirm-content {
+    text-align: center;
+}
+
+.delete-warning-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+    animation: shakeWarning 0.5s infinite;
+}
+
+.delete-question {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: #E07A5F;
+    margin-bottom: 12px;
+}
+
+.delete-message {
+    font-size: 11px;
+    color: #F8F0DC;
+    margin-bottom: 20px;
+}
+
+.delete-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@keyframes shakeWarning {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+}
+
+/* ============================================ */
+/* FRIENDS LIST STYLES                          */
+/* ============================================ */
+
+.add-friend-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.add-friend-row .pixel-input {
+    flex: 1;
+    min-width: 150px;
+}
+
+.friends-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.friend-request-item, .friend-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #F8F0DC;
+    border: 3px solid #4A5A3A;
+    padding: 12px;
+    flex-wrap: wrap;
+}
+
+.friend-avatar {
+    font-size: 32px;
+    min-width: 48px;
+    text-align: center;
+}
+
+.friend-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    flex: 1;
+    min-width: 100px;
+    color: #2D3E1A;
+}
+
+.friend-stats {
+    font-size: 14px;
+    color: #6B8C42;
+    min-width: 80px;
+}
+
+.friend-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.unread-badge {
+    background: #E07A5F;
+    color: white;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 2px 6px;
+    margin-left: 8px;
+    display: inline-block;
+}
+
+.unread-dot {
+    color: #E07A5F;
+    font-size: 12px;
+    margin-left: 4px;
+    display: inline-block;
+}
+
+/* ============================================ */
+/* CHAT MODAL STYLES                            */
+/* ============================================ */
+
+.chat-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20000;
+}
+
+.chat-modal-overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.chat-modal-container {
+    background: #FFFFF0;
+    border: 4px solid #6B8C42;
+    width: 90%;
+    max-width: 500px;
+    height: 80%;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+    box-shadow: 8px 8px 0px #2D3E1A;
+}
+
+.chat-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: #6B8C42;
+    border-bottom: 3px solid #2D3E1A;
+}
+
+.chat-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-avatar {
+    font-size: 32px;
+}
+
+.chat-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: #F8F0DC;
+}
+
+.chat-close-btn {
+    background: #E07A5F;
+    border: 2px solid #8B3A2A;
+    color: white;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 10px;
+}
+
+.chat-close-btn:hover {
+    background: #C04E3A;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chat-empty {
+    text-align: center;
+    color: #A5673F;
+    font-size: 14px;
+    padding: 40px;
+}
+
+.chat-message {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.chat-message-me {
+    justify-content: flex-end;
+}
+
+.chat-message-them {
+    justify-content: flex-start;
+}
+
+.chat-message-bubble {
+    max-width: 70%;
+    padding: 10px 14px;
+    border: 2px solid #4A5A3A;
+    background: #F8F0DC;
+}
+
+.chat-message-me .chat-message-bubble {
+    background: #6B8C42;
+    border-color: #2D3E1A;
+}
+
+.chat-message-me .chat-message-text {
+    color: #F8F0DC;
+}
+
+.chat-message-text {
+    font-size: 16px;
+    color: #2D3E1A;
+    word-wrap: break-word;
+}
+
+.chat-message-time {
+    font-size: 9px;
+    color: #A5673F;
+    margin-top: 4px;
+    text-align: right;
+}
+
+.chat-message-me .chat-message-time {
+    color: #D4C9A8;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 8px;
+    padding: 16px;
+    border-top: 3px solid #4A5A3A;
+    background: #FFFFF0;
+}
+
+.chat-input {
+    flex: 1;
+    background: #FFFFF0;
+    border: 3px solid #4A5A3A;
+    padding: 10px;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: #2D3E1A;
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: #F4C542;
+}
+
+.chat-send-btn {
+    font-family: 'Press Start 2P', monospace;
+    background: #6B8C42;
+    border: 3px solid #2D3E1A;
+    color: #F8F0DC;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.chat-send-btn:hover {
+    background: #8CA87B;
+}
+
+/* ============================================ */
+/* RESPONSIVE                                   */
+/* ============================================ */
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
+    .logo h1 {
+        font-size: 20px;
+    }
+    
+    .pixel-tab {
+        font-size: 8px;
+        padding: 6px 10px;
+    }
+    
+    .garden-grid {
+        grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+        gap: 6px;
+    }
+    
+    .garden-plant {
+        font-size: 32px;
+        padding: 6px;
+    }
+    
+    .album-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    }
+    
+    .avatar-item {
+        font-size: 24px;
+        padding: 8px 10px;
+    }
+    
+    .plant-popup-container {
+        max-width: 360px;
+        padding: 20px 16px 16px 16px;
+    }
+    
+    .plant-popup-emoji {
+        font-size: 56px;
+    }
+    
+    .plant-popup-name {
+        font-size: 14px;
+    }
+    
+    .plant-popup-good {
+        font-size: 16px;
+        max-height: 120px;
+    }
+    
+    .plant-popup-photo {
+        max-width: 200px;
+        max-height: 200px;
+    }
+    
+    .history-photo-small {
+        max-width: 90px;
+        max-height: 90px;
+    }
+    
+    .meadow-post-image-small {
+        max-width: 110px;
+        max-height: 110px;
+    }
+    
+    .history-good {
+        font-size: 16px;
+    }
+    
+    .friend-item, .friend-request-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .friend-actions {
+        justify-content: center;
+    }
+    
+    .chat-modal-container {
+        width: 95%;
+        height: 85%;
+    }
+    
+    .chat-message-bubble {
+        max-width: 85%;
+    }
+    
+    .chat-message-text {
+        font-size: 14px;
+    }
+}
+
+/* ============================================ */
+/* CONTACT MODAL STYLES                         */
+/* ============================================ */
+
+.contact-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 30000;
+}
+
+.contact-modal-overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.contact-modal-container {
+    background: #FFFFF0;
+    border: 4px solid #6B8C42;
+    width: 90%;
+    max-width: 450px;
+    max-height: 90%;
+    overflow-y: auto;
+    cursor: default;
+    box-shadow: 8px 8px 0px #2D3E1A;
+}
+
+.contact-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: #6B8C42;
+    border-bottom: 3px solid #2D3E1A;
+}
+
+.contact-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contact-icon {
+    font-size: 24px;
+}
+
+.contact-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: #F8F0DC;
+}
+
+.contact-close-btn, .forgot-close-btn {
+    background: #E07A5F;
+    border: 2px solid #8B3A2A;
+    color: white;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 10px;
+}
+
+.contact-close-btn:hover, .forgot-close-btn:hover {
+    background: #C04E3A;
+}
+
+.contact-modal-body {
+    padding: 20px;
+}
+
+.contact-desc {
+    font-size: 14px;
+    color: #A5673F;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.contact-form-group {
+    margin-bottom: 16px;
+}
+
+.contact-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #6B8C42;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.contact-input, .contact-textarea {
+    width: 100%;
+    background: #FFFFF0;
+    border: 3px solid #4A5A3A;
+    padding: 10px;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: #2D3E1A;
+}
+
+.contact-input:focus, .contact-textarea:focus {
+    outline: none;
+    border-color: #F4C542;
+}
+
+.contact-textarea {
+    resize: vertical;
+}
+
+.contact-submit-btn {
+    font-family: 'Press Start 2P', monospace;
+    background: #E07A5F;
+    border: 3px solid #8B3A2A;
+    color: #FFFFF0;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.05s linear;
+    box-shadow: 3px 3px 0px #5C2E1A;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.contact-submit-btn:hover {
+    background: #C04E3A;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #5C2E1A;
+}
+
+.contact-feedback {
+    margin-top: 12px;
+    font-size: 11px;
+    text-align: center;
+    font-family: 'Press Start 2P', monospace;
+    display: none;
+}
+
+.contact-feedback.success {
+    color: #6B8C42;
+    display: block;
+}
+
+.contact-feedback.error {
+    color: #E07A5F;
+    display: block;
+}
+/* Pixel Logo Style - Small Wide Logo */
+.pixel-logo {
+    max-width: 80px;
+    max-height: 28px;
+    width: auto;
+    height: auto;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    filter: drop-shadow(2px 2px 0px #2D3E1A);
+    object-fit: contain;
+}
+
+/* For larger screens */
+@media (min-width: 600px) {
+    .pixel-logo {
+        max-width: 90px;
+        max-height: 32px;
+    }
+}
+
+/* For mobile screens */
+@media (max-width: 600px) {
+    .pixel-logo {
+        max-width: 70px;
+        max-height: 25px;
+    }
+}

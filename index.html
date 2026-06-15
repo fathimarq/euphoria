@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Euphoria 🌿
+    </title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        body {
+            background: #F8F0DC;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            color: #2D3E1A;
+            min-height: 100vh;
+        }
+
+        .pixel-crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 4px);
+            z-index: 999;
+        }
+
+        .landing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .hero-logo span {
+            font-size: 64px;
+            filter: drop-shadow(4px 4px 0px #2D3E1A);
+            animation: gentleBob 2s infinite;
+        }
+
+        .hero-logo h1 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 48px;
+            color: #F4C542;
+            text-shadow: 4px 4px 0px #2D3E1A;
+            letter-spacing: 3px;
+        }
+
+        .hero-tagline {
+            font-size: 24px;
+            color: #6B8C42;
+            margin-bottom: 16px;
+            font-family: 'Press Start 2P', monospace;
+        }
+
+        .hero-description {
+            font-size: 20px;
+            color: #A5673F;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Pixel Logo Style - Small Wide Logo */
+.pixel-logo {
+    max-width: 90px;
+    max-height: 30px;
+    width: auto;
+    height: auto;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    filter: drop-shadow(2px 2px 0px #2D3E1A);
+    object-fit: contain;
+}
+
+/* For larger screens */
+@media (min-width: 600px) {
+    .pixel-logo {
+        max-width: 80px;
+        max-height: 24px;
+    }
+}
+
+/* For mobile screens */
+@media (max-width: 600px) {
+    .pixel-logo {
+        max-width: 40px;
+        max-height: 16px;
+    }
+}
+
+/* Align logo with title */
+.hero-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: #FFFFF0;
+            border: 4px solid #4A5A3A;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 6px 6px 0px #A5673F;
+            transition: all 0.05s linear;
+        }
+
+        .feature-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0px #A5673F;
+        }
+
+        .feature-emoji {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .feature-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 14px;
+            color: #6B8C42;
+            margin-bottom: 12px;
+        }
+
+        .feature-text {
+            font-size: 16px;
+            color: #2D3E1A;
+            line-height: 1.4;
+        }
+
+        .auth-container {
+            max-width: 400px;
+            margin: 0 auto 30px auto;
+            width: 100%;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border: 3px solid #4A5A3A;
+            background: #D4C9A8;
+        }
+
+        .auth-tab {
+            flex: 1;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 12px;
+            background: #F4C542;
+            border: none;
+            color: #2D3E1A;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.05s linear;
+            text-align: center;
+        }
+
+        .auth-tab:first-child {
+            border-right: 2px solid #4A5A3A;
+        }
+
+        .auth-tab.active {
+            background: #6B8C42;
+            color: #F8F0DC;
+            box-shadow: inset 2px 2px 0px #2D3E1A;
+        }
+
+        .auth-tab:hover:not(.active) {
+            background: #F8D86A;
+        }
+
+        .auth-panel {
+            display: none;
+            background: #FFFFF0;
+            border: 4px solid #4A5A3A;
+            padding: 24px;
+            box-shadow: 6px 6px 0px #A5673F;
+        }
+
+        .auth-panel.active {
+            display: block;
+            animation: pixelFade 0.2s steps(4);
+        }
+
+        .auth-input {
+            width: 100%;
+            background: #FFFFF0;
+            border: 3px solid #4A5A3A;
+            padding: 12px;
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            color: #2D3E1A;
+            margin-bottom: 16px;
+            box-shadow: inset 2px 2px 0px #D4C9A8;
+        }
+
+        .auth-input:focus {
+            outline: none;
+            border-color: #F4C542;
+        }
+
+        .auth-button {
+            font-family: 'Press Start 2P', monospace;
+            background: #6B8C42;
+            border: 3px solid #2D3E1A;
+            color: #F8F0DC;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.05s linear;
+            box-shadow: 3px 3px 0px #2D3E1A;
+            width: 100%;
+            text-align: center;
+        }
+
+        .auth-button:hover {
+            background: #8CA87B;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #2D3E1A;
+        }
+
+        .auth-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px #2D3E1A;
+        }
+
+        .auth-error {
+            font-size: 11px;
+            color: #E07A5F;
+            margin-top: 12px;
+            text-align: center;
+            font-family: 'Press Start 2P', monospace;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .auth-success {
+            font-size: 11px;
+            color: #6B8C42;
+            margin-top: 12px;
+            text-align: center;
+            font-family: 'Press Start 2P', monospace;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .email-contact {
+            text-align: center;
+            margin: 20px auto;
+            padding: 16px;
+            background: #FFFFF0;
+            border: 3px solid #4A5A3A;
+            box-shadow: 4px 4px 0px #A5673F;
+        }
+
+        .email-contact p {
+            font-size: 14px;
+            color: #2D3E1A;
+        }
+
+        .email-contact a {
+            color: #6B8C42;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 12px;
+            text-decoration: none;
+            border-bottom: 2px solid #F4C542;
+        }
+
+        .email-contact a:hover {
+            color: #F4C542;
+        }
+
+        .landing-footer {
+            text-align: center;
+            margin-top: auto;
+            padding: 24px;
+            border-top: 3px solid #4A5A3A;
+            font-size: 12px;
+            color: #A5673F;
+        }
+
+        @keyframes gentleBob {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pixelFade {
+            0% { opacity: 0; transform: translateY(4px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .hero-logo h1 { font-size: 28px; }
+            .hero-logo span { font-size: 40px; }
+            .hero-tagline { font-size: 16px; }
+            .hero-description { font-size: 16px; }
+            .feature-title { font-size: 11px; }
+            .feature-text { font-size: 14px; }
+            .auth-container { max-width: 340px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="pixel-crt-overlay"></div>
+    
+    <div class="landing-container">
+        <div class="hero">
+            <div class="hero-logo">
+                <h1>EUPHORIA</h1>
+                <img src="logo.png" alt="Euphoria Logo" class="pixel-logo">
+                
+            </div>
+            <div class="hero-tagline">🌱 Plant tiny wins. Grow your garden. 🌸</div>
+            <div class="hero-description">
+                A cozy pixel-art habit garden where every good thing you do grows a plant.<br>
+                Collect cards, share joy, and watch your garden bloom.
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <span class="feature-emoji">🌱</span>
+                <div class="feature-title">PLANT A WIN</div>
+                <div class="feature-text">Log one good thing you did today and watch a seed grow</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-emoji">📖</span>
+                <div class="feature-title">COLLECT CARDS</div>
+                <div class="feature-text">Earn rare plant cards with motivational quotes</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-emoji">🌸</span>
+                <div class="feature-title">THE MEADOW</div>
+                <div class="feature-text">Share your wins and celebrate with others</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-emoji">🌳</span>
+                <div class="feature-title">GROW YOUR GARDEN</div>
+                <div class="feature-text">Level up, unlock plants, and watch your garden flourish</div>
+            </div>
+        </div>
+
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-auth="login">🔐 LOGIN</button>
+                <button class="auth-tab" data-auth="signup">🌱 SIGN UP</button>
+            </div>
+
+            <div id="loginPanel" class="auth-panel active">
+                <input type="text" id="loginUsername" class="auth-input" placeholder="USERNAME" maxlength="20" autocomplete="off">
+                <input type="password" id="loginPassword" class="auth-input" placeholder="PASSWORD">
+                <button id="loginBtn" class="auth-button">🔓 START GROWING</button>
+                <div id="loginError" class="auth-error"></div>
+                <div id="loginSuccess" class="auth-success"></div>
+            </div>
+
+            <div id="signupPanel" class="auth-panel">
+                <input type="text" id="signupUsername" class="auth-input" placeholder="USERNAME" maxlength="20" autocomplete="off">
+                <input type="password" id="signupPassword" class="auth-input" placeholder="PASSWORD">
+                <input type="password" id="signupConfirm" class="auth-input" placeholder="CONFIRM PASSWORD">
+                <button id="signupBtn" class="auth-button">🌿 CREATE GARDEN</button>
+                <div id="signupError" class="auth-error"></div>
+                <div id="signupSuccess" class="auth-success"></div>
+            </div>
+        </div>
+
+        <!-- Email Contact -->
+        <div class="email-contact">
+            <p>📧 Need help? Contact us at:</p>
+            <p><a href="mailto:fathimaarq5@gmail.com">fathimaarq5@gmail.com</a></p>
+        </div>
+
+        <footer class="landing-footer">
+            <span>🌱 Euphoria — Every good thing grows ★ CREATE YOUR UNIQUE GARDEN ★</span>
+        </footer>
+    </div>
+
+    <script>
+        // ============================================
+        // LANDING PAGE AUTH LOGIC
+        // ============================================
+        
+        const tabs = document.querySelectorAll('.auth-tab');
+        const loginPanel = document.getElementById('loginPanel');
+        const signupPanel = document.getElementById('signupPanel');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                if (tab.dataset.auth === 'login') {
+                    loginPanel.classList.add('active');
+                    signupPanel.classList.remove('active');
+                    document.getElementById('loginError').style.display = 'none';
+                    document.getElementById('loginSuccess').style.display = 'none';
+                } else {
+                    signupPanel.classList.add('active');
+                    loginPanel.classList.remove('active');
+                    document.getElementById('signupError').style.display = 'none';
+                    document.getElementById('signupSuccess').style.display = 'none';
+                }
+            });
+        });
+        
+        function showError(elementId, message) {
+            const errorEl = document.getElementById(elementId);
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+            setTimeout(() => {
+                errorEl.style.display = 'none';
+            }, 4000);
+        }
+        
+        function showSuccess(elementId, message, redirectDelay = 0) {
+            const successEl = document.getElementById(elementId);
+            successEl.textContent = message;
+            successEl.style.display = 'block';
+            if (redirectDelay > 0) {
+                setTimeout(() => {
+                    window.location.href = 'app.html';
+                }, redirectDelay);
+            }
+        }
+        
+        function getUsers() {
+            return JSON.parse(localStorage.getItem('euphoria_users') || '{}');
+        }
+        
+        function saveUsers(users) {
+            localStorage.setItem('euphoria_users', JSON.stringify(users));
+        }
+        
+        function userExists(username) {
+            const users = getUsers();
+            return users.hasOwnProperty(username.toLowerCase());
+        }
+        
+        function createUser(username, password) {
+            const users = getUsers();
+            users[username.toLowerCase()] = {
+                username: username,
+                password: password
+            };
+            saveUsers(users);
+        }
+        
+        function validateUser(username, password) {
+            const users = getUsers();
+            const user = users[username.toLowerCase()];
+            return user && user.password === password;
+        }
+        
+        function login(username, password) {
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginSuccess').style.display = 'none';
+            
+            if (!username || !username.trim()) {
+                showError('loginError', '❌ Please enter your username!');
+                return false;
+            }
+            
+            if (!password) {
+                showError('loginError', '❌ Please enter your password!');
+                return false;
+            }
+            
+            if (validateUser(username, password)) {
+                localStorage.setItem('euphoria_current_user', username.toLowerCase());
+                showSuccess('loginSuccess', ' Login successful! Redirecting to your garden... ', 1200);
+                return true;
+            } else {
+                showError('loginError', '❌ Invalid username or password!');
+                return false;
+            }
+        }
+        
+        function signup(username, password, confirm) {
+            document.getElementById('signupError').style.display = 'none';
+            document.getElementById('signupSuccess').style.display = 'none';
+            
+            if (!username || !username.trim()) {
+                showError('signupError', '❌ Please choose a username!');
+                return false;
+            }
+            
+            if (username.length < 3) {
+                showError('signupError', '❌ Username must be at least 3 characters!');
+                return false;
+            }
+            
+            if (username.length > 20) {
+                showError('signupError', '❌ Username must be less than 20 characters!');
+                return false;
+            }
+            
+            if (userExists(username)) {
+                showError('signupError', '❌ Username already taken!');
+                return false;
+            }
+            
+            if (!password) {
+                showError('signupError', '❌ Please enter a password!');
+                return false;
+            }
+            
+            if (password.length < 3) {
+                showError('signupError', '❌ Password must be at least 3 characters!');
+                return false;
+            }
+            
+            if (password !== confirm) {
+                showError('signupError', '❌ Passwords do not match!');
+                return false;
+            }
+            
+            createUser(username, password);
+            
+            showSuccess('signupSuccess', ' Account created! Logging you in... ', 0);
+            
+            setTimeout(() => {
+                localStorage.setItem('euphoria_current_user', username.toLowerCase());
+                window.location.href = 'app.html';
+            }, 1500);
+            
+            return true;
+        }
+        
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            login(username, password);
+        });
+        
+        document.getElementById('signupBtn').addEventListener('click', () => {
+            const username = document.getElementById('signupUsername').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('signupConfirm').value;
+            signup(username, password, confirm);
+        });
+        
+        document.getElementById('loginPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+        
+        document.getElementById('signupConfirm').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('signupBtn').click();
+        });
+        
+        if (localStorage.getItem('euphoria_current_user')) {
+            window.location.href = 'app.html';
+        }
+    </script>
+</body>
+</html>

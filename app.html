@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Euphoria 🌿 </title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <script>
+        // Check if user is logged in - NO GUEST MODE
+        const currentUser = localStorage.getItem('euphoria_current_user');
+        if (!currentUser) {
+            window.location.href = 'index.html';
+        }
+        
+        // Store username for use in app
+        window.currentUserName = currentUser;
+    </script>
+
+    <div class="pixel-crt-overlay"></div>
+    
+    <div class="container">
+        <!-- Pixel Header -->
+        <header class="pixel-header">
+            <div class="logo">
+                <img src="logo.png" alt="Euphoria Logo" class="pixel-logo">
+                <h1>EUPHORIA</h1>
+            </div>
+            <p class="tagline">🌱 Plant tiny wins. Grow plants. Collect cards. Share joy. 🌸</p>
+        </header>
+
+        <!-- Navigation Tabs (Pixel Style) -->
+        <div class="nav-tabs">
+            <button class="pixel-tab active" data-tab="home">🌱 HOME</button>
+            <button class="pixel-tab" data-tab="garden">🌿 GARDEN</button>
+            <button class="pixel-tab" data-tab="album">📖 ALBUM</button>
+            <button class="pixel-tab" data-tab="meadow">🌸 MEADOW</button>
+            <button class="pixel-tab" data-tab="roots">📜 ROOTS</button>
+            <button class="pixel-tab" data-tab="friends">👥 FRIENDS</button>
+            <button class="pixel-tab" data-tab="settings">⚙️ SETTINGS</button>
+        </div>
+
+        <!-- ========== HOME TAB ========== -->
+        <div id="home" class="tab-content active">
+            <!-- Sunrise Mantra -->
+            <div class="pixel-card mantra-card">
+                <div class="pixel-card-header">☀️ SUNRISE MANTRA</div>
+                <div class="mantra-text" id="dailyMantra">Loading...</div>
+                <div class="mantra-source">— Euphoria Grove</div>
+            </div>
+
+            <!-- Streak & Level -->
+            <div class="stats-row">
+                <div class="pixel-card stat-card">
+                    <div class="stat-label">🔥 STREAK</div>
+                    <div class="stat-value" id="streakCount">0</div>
+                </div>
+                <div class="pixel-card stat-card">
+                    <div class="stat-label">⭐ LEVEL</div>
+                    <div class="stat-value" id="levelTitle">Seedling</div>
+                </div>
+                <div class="pixel-card stat-card">
+                    <div class="stat-label">🌱 TOTAL WINS</div>
+                    <div class="stat-value" id="totalWins">0</div>
+                </div>
+            </div>
+
+            <!-- XP Bar -->
+            <div class="pixel-card xp-card">
+                <div class="xp-label">🌿 NEXT LEVEL</div>
+                <div class="xp-bar-bg">
+                    <div class="xp-bar-fill" id="xpFill" style="width: 0%;"></div>
+                </div>
+                <div class="xp-text" id="xpText">0 / 5 XP</div>
+            </div>
+
+            <!-- Plant a Win -->
+            <div class="pixel-card plant-card">
+                <div class="pixel-card-header">🌻 PLANT A WIN</div>
+                <textarea id="goodThingInput" class="pixel-input" rows="2" placeholder="What good thing did you do today?"></textarea>
+                <div class="photo-upload-row">
+                    <label class="pixel-button pixel-button-small">
+                        📷 ADD PHOTO
+                        <input type="file" id="photoUpload" accept="image/*" style="display:none">
+                    </label>
+                    <span id="photoName" class="photo-name">No photo</span>
+                </div>
+                <button id="submitWin" class="pixel-button pixel-button-large">🌱 PLANT SEED</button>
+                <div id="plantFeedback" class="feedback-message"></div>
+            </div>
+
+            <!-- Mini Garden Preview -->
+            <div class="pixel-card preview-card">
+                <div class="pixel-card-header">🌱 RECENT PLANTS</div>
+                <div class="mini-garden" id="miniGarden">
+                    <span class="empty-garden">Plant your first win </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== GARDEN TAB ========== -->
+        <div id="garden" class="tab-content">
+            <div class="pixel-card">
+                <div class="pixel-card-header">🌳 MY PIXEL GARDEN</div>
+                <div class="garden-grid" id="gardenGrid"></div>
+                <div class="garden-hint">🌸 Click any plant to see your memory + photo</div>
+            </div>
+        </div>
+
+        <!-- ========== ALBUM TAB ========== -->
+        <div id="album" class="tab-content">
+            <div class="pixel-card">
+                <div class="pixel-card-header">📖 PLANT CARD ALBUM</div>
+                <div class="album-stats" id="albumStats">0 / 0 cards collected</div>
+                <div class="album-grid" id="albumGrid"></div>
+            </div>
+        </div>
+
+        <!-- ========== MEADOW TAB ========== -->
+        <div id="meadow" class="tab-content">
+            <div class="pixel-card">
+                <div class="pixel-card-header">🌸 THE MEADOW</div>
+                <div class="meadow-submit">
+                    <textarea id="meadowPost" class="pixel-input" rows="2" placeholder="Share a win with the community..."></textarea>
+                    <div class="meadow-controls">
+                        <label class="pixel-button-small">
+                            📷 ADD PHOTO
+                            <input type="file" id="meadowPhoto" accept="image/*" style="display:none">
+                        </label>
+                        <label class="pixel-checkbox">
+                            <input type="checkbox" id="anonymousToggle"> Share anonymously
+                        </label>
+                        <button id="submitMeadowPost" class="pixel-button-small">🌿 POST TO MEADOW</button>
+                    </div>
+                </div>
+                <div class="meadow-feed" id="meadowFeed"></div>
+            </div>
+        </div>
+
+        <!-- ========== ROOTS TAB ========== -->
+        <div id="roots" class="tab-content">
+            <div class="pixel-card">
+                <div class="pixel-card-header">📜 MY ROOTS (HISTORY)</div>
+                <div id="historyList" class="history-list"></div>
+            </div>
+        </div>
+
+        <!-- ========== FRIENDS TAB ========== -->
+        <div id="friends" class="tab-content">
+            <!-- Add Friend Section -->
+            <div class="pixel-card">
+                <div class="pixel-card-header">👋 ADD FRIEND</div>
+                <div class="add-friend-row">
+                    <input type="text" id="friendUsername" class="pixel-input" placeholder="Enter username..." maxlength="20">
+                    <button id="sendFriendRequest" class="pixel-button">🌿 SEND REQUEST</button>
+                </div>
+                <div id="friendRequestFeedback" class="feedback-message"></div>
+            </div>
+
+            <!-- Pending Requests -->
+            <div class="pixel-card">
+                <div class="pixel-card-header">📬 PENDING REQUESTS</div>
+                <div id="pendingRequestsList" class="friends-list">
+                    <div class="empty-garden">No pending requests</div>
+                </div>
+            </div>
+
+            <!-- Friends List -->
+            <div class="pixel-card">
+                <div class="pixel-card-header">👥 MY FRIENDS <span id="unreadBadge" class="unread-badge" style="display:none;"></span></div>
+                <div id="friendsList" class="friends-list">
+                    <div class="empty-garden">🌱 Add some friends to see them here 🌱</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SETTINGS TAB ========== -->
+        <div id="settings" class="tab-content">
+            <!-- Gardener Profile Card -->
+            <div class="pixel-card profile-card">
+                <div class="pixel-card-header">🌿 GARDENER PROFILE</div>
+                
+                <!-- Current Profile Preview -->
+                <div class="profile-preview">
+                    <div class="profile-preview-avatar" id="profilePreviewAvatar">🌱</div>
+                    <div class="profile-preview-name" id="profilePreviewName">A Gardener</div>
+                </div>
+                
+                <!-- Username Display (Read-only) -->
+                <div class="settings-row">
+                    <label class="settings-label">🏷️ YOUR USERNAME</label>
+                    <div id="usernameDisplay" class="username-display" style="font-size: 20px; text-align: center; padding: 12px; background: #F8F0DC; border: 3px solid #4A5A3A; font-family: 'Press Start 2P', monospace;">Loading...</div>
+                    <p class="settings-hint">Your unique garden identity</p>
+                </div>
+            </div>
+
+            <!-- Pixel Avatar Selection Card -->
+            <div class="pixel-card avatar-card">
+                <div class="pixel-card-header">🎨 PIXEL AVATAR</div>
+                <p class="settings-hint center-hint">Pick your pixel face → updates instantly</p>
+                
+                <div class="avatar-scroll-container">
+                    <div class="avatar-row">
+                        <div class="avatar-item" data-avatar="🌱">🌱</div>
+                        <div class="avatar-item" data-avatar="🌿">🌿</div>
+                        <div class="avatar-item" data-avatar="🌸">🌸</div>
+                        <div class="avatar-item" data-avatar="🌻">🌻</div>
+                        <div class="avatar-item" data-avatar="🍄">🍄</div>
+                        <div class="avatar-item" data-avatar="✨">✨</div>
+                        <div class="avatar-item" data-avatar="⭐">⭐</div>
+                        <div class="avatar-item" data-avatar="🍃">🍃</div>
+                        <div class="avatar-item" data-avatar="🌼">🌼</div>
+                        <div class="avatar-item" data-avatar="🐞">🐞</div>
+                        <div class="avatar-item" data-avatar="🦋">🦋</div>
+                        <div class="avatar-item" data-avatar="🍎">🍎</div>
+                        <div class="avatar-item" data-avatar="🍂">🍂</div>
+                        <div class="avatar-item" data-avatar="🌙">🌙</div>
+                        <div class="avatar-item" data-avatar="☀️">☀️</div>
+                    </div>
+                </div>
+                
+                <div id="avatarUpdateMessage" class="avatar-update-message" style="display: none;">
+                     Pixel face updated! 
+                </div>
+            </div>
+
+            <!-- Logout Button -->
+            <div class="pixel-card">
+                <button id="logoutBtn" class="pixel-button" style="width:100%;">🚪 LOGOUT</button>
+            </div>
+
+            <!-- Danger Zone Card -->
+            <div class="pixel-card danger-card">
+                <div class="pixel-card-header danger-header">⚠️ DANGER ZONE</div>
+                
+                <!-- DELETE BUTTON -->
+                <button id="resetButton" class="pixel-button-danger-full">🗑️ DELETE MY ACCOUNT 🗑️</button>
+                <p class="danger-warning-small">This will wipe all your plants, cards, roots, and meadow posts FOREVER.</p>
+                
+                <!-- Confirmation Box -->
+                <div id="deleteConfirmBox" class="delete-confirm-box" style="display: none;">
+                    <div class="delete-confirm-content">
+                        <div class="delete-warning-icon">⚠️⚠️⚠️</div>
+                        <div class="delete-question">DELETE YOUR ACCOUNT FOREVER?</div>
+                        <div class="delete-message">All your plants, cards, roots, and meadow posts will be gone.<br>This cannot be undone.</div>
+                        <div class="delete-buttons">
+                            <button id="confirmDeleteYes" class="pixel-button-danger-small">YES, DELETE</button>
+                            <button id="confirmDeleteNo" class="pixel-button-small">🌱 CANCEL</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="pixel-footer">
+        <span>🌱 Euphoria — Every good thing grows</span>
+    </footer>
+
+    <script src="quotes.js"></script>
+    <script src="plants.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
